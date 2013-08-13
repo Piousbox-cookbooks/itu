@@ -1,0 +1,23 @@
+
+
+
+<VirtualHost *:80>
+
+
+  ServerAdmin piousbox@gmail.com
+  ServerName infiniteshelter.com
+  ServerAlias www.infiniteshelter.com
+
+  ProxyPreserveHost On
+  ProxyVia full
+
+  <proxy>
+    Order deny,allow
+    Allow from all
+  </proxy>
+
+  ProxyPass / http://10.0.0.134:8080/
+  ProxyPassReverse / http://10.0.0.134:8080/
+
+
+</VirtualHost>

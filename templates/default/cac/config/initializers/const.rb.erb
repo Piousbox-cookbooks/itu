@@ -1,0 +1,19 @@
+
+FB_ID_3001 = "179577828841422"
+FB_SE_3001 = "597222a8bfa42c54ddc58f99dfc86651"
+
+if Rails.env == 'test'
+  S3_CREDENTIALS = { 
+    :access_key_id => "AKIAICS67L3FUORLSA7A", 
+    :secret_access_key => "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", 
+    :bucket => "ISh-test"
+  }
+else
+  S3_CREDENTIALS = { 
+    :access_key_id => "AKIAICS67L3FUORLSA7A", 
+    :secret_access_key => "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", 
+    :bucket => "ISh-development"
+  }
+end
+
+

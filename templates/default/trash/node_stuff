@@ -1,0 +1,12 @@
+Ohai detects attributes on the node based on its own plugin system. The most commonly accessed attributes are:
+
+    node['platform'] - The node's platform. This determines what Providers are used by Resources.
+    node['platform_version'] - The node's platform version. This may be used in determining Providers as well.
+    node['ipaddress'] - The node's ipaddress is IPV4 address of the interface that has the default route. If the node does not have a default route, this attribute will be nil. Using the IP of the interface with the default route is deemed the most sane default.
+    node['macaddress'] - The node's macaddress, from the interface detected for ipaddress above.
+    node['fqdn'] - The fully qualified domain name, for example from hostname -f on Unix/Linux systems. This is also used as the node name unless otherwise set.
+    node['hostname'] - The hostname is the first field from splitting the FQDN on "." (dot).
+    node['domain'] - The domain is the rest of the FQDN after splitting on "." (dot).
+    node['recipes'] - The node's Run List is expanded for roles and recipes, and recipes are stored in this attribute.
+    node['roles'] - The node's Run List is expanded for roles and recipes, and roles are stored in this attribute.
+    node['ohai_time'] - Not commonly used in recipes, but this value is the time epoch of the node when ohai was run, and gets saved to the Chef Server. It is also used in the Knife "status" sub command.

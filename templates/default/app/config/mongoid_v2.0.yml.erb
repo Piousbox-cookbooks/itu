@@ -1,0 +1,11 @@
+
+
+production:
+  host: <%= @host %>:<%= @port %>
+  database: <%= @database %>
+  sessions:
+    default:
+      database: <%= @database %>
+      hosts:
+        - <%= @host %>:<%= @port %>
+        

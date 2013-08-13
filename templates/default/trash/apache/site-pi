@@ -1,0 +1,22 @@
+
+
+
+<VirtualHost *:80>
+
+
+  ServerAdmin piousbox@gmail.com
+  ServerName piousbox.com
+
+  ProxyPreserveHost On
+  ProxyVia full
+
+  <proxy>
+    Order deny,allow
+    Allow from all
+  </proxy>
+
+  ProxyPass / http://10.0.1.23:8083/
+  ProxyPassReverse / http://10.0.1.23:8083/
+
+
+</VirtualHost>
