@@ -77,27 +77,21 @@ search(:apps) do |app|
         code %{ sudo chown #{app['owner']} /usr/local/rbenv -R }
       end
       
-      # rbenv_script "install bundler" do
-      #   code %{ cd #{app['deploy_to']}/current && gem install bundler }
-      # end
-
       rbenv_script 'uninstall and cleanup bundler gem' do
         code %{ cd #{app['deploy_to']}/current && gem cleanup bundler }
       end
 
-      app['gems'].each do |gem|
-        rbenv_script "install gem #{gem[0]}" do
-          code %{ cd #{app['deploy_to']}/current && gem install #{gem[0]} --version #{gem[1]} }
+      proc do # hidden
+        app['gems'].each do |gem|
+          rbenv_script "install gem #{gem[0]}" do
+            code %{ cd #{app['deploy_to']}/current && gem install #{gem[0]} --version #{gem[1]} }
+          end
+        end
+        
+        rbenv_script 'bundle install' do
+          code %{ cd #{deploy_to}/current && bundle install --without development test }
         end
       end
-
-      rbenv_script 'bundle install' do
-        code %{ cd #{deploy_to}/current && bundle install --without development test }
-      end
-
-      # rbenv_script 'recompile bcrypt' do
-      #   code %{ cd #{deploy_to}/current/vendor/ruby/1.9.1/gems/bcrypt*/ext/mri && ruby extconf.rb && make && make install }
-      # end
 
       template "#{deploy_to}/shared/unicorn.rb" do
         owner app['owner']
@@ -136,13 +130,6 @@ search(:apps) do |app|
         )
       end
 
-      template "#{app['deploy_to']}/current/config/initializers/const.rb" do
-        owner app['owner']
-        group app['group']
-        source "qxt/const.rb.erb"
-        mode "0664"
-      end
-
       template "#{app['deploy_to']}/current/config/database.yml" do
         source "app/config/database_remote.yml.erb"
         owner app['owner']
@@ -150,9 +137,10 @@ search(:apps) do |app|
         mode "0664"
       
         variables(
-          :host => app['databases']['host'],
-          :database => app['databases']['database']
-          :password => app['databases']['password']
+          :host => app['db_host'],
+          :database => app['db_name'],
+          :password => app['db_password'],
+          :username => app['db_username']
         )
       end
 
